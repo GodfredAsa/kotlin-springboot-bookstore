@@ -1,5 +1,7 @@
 package io.employeekotlin.service.employee
 import io.employeekotlin.client.EmployeeResponse
+import io.employeekotlin.constants.CustomErrorMessage
+import io.employeekotlin.constants.EmployeeConstants
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
@@ -10,23 +12,19 @@ class EmployeeService(private val employeeRepository: EmployeeRepository) {
 
     fun getEmployeeById(id: Long): ResponseEntity<EmployeeResponse>{
         if(!employeeRepository.existsById(id)){
-            return ResponseEntity(EmployeeResponse(
-                    1, "Employee with the Provided ID not found",
-                    null, ""), HttpStatus.NOT_FOUND)
+            return ResponseEntity(EmployeeResponse(1, EmployeeConstants.NOT_FOUND, null,
+                    CustomErrorMessage.NULL_ERROR), HttpStatus.NOT_FOUND)
         }
         return ResponseEntity(EmployeeResponse(
-                0, "",
-                employeeRepository.getReferenceById(id),
-                ""), HttpStatus.OK)
+                0, "", employeeRepository.getReferenceById(id), ""), HttpStatus.OK)
     }
 
     fun addEmployee(employee: Employee): ResponseEntity<EmployeeResponse>{
         val existingEmployee = employeeRepository.existsByEmail(employee.email)
         if(existingEmployee){
             return ResponseEntity(EmployeeResponse(
-                            1,
-                    "Employee with the email already exists",
-                    null, "Email already taken"),
+                    1, EmployeeConstants.EMAIL_EXISTS,
+                    null, EmployeeConstants.EMAIL_EXISTS),
                     HttpStatus.CONFLICT)
         }
         return ResponseEntity(EmployeeResponse(
