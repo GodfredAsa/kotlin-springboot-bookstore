@@ -43,14 +43,13 @@ class SalesServiceImp(
                 employeeRepository.updateWalletById(employee.get().wallet - costOfBook, request.employeeId)
                 bookRepository.updateNumberOfBooksById(book.get().numberOfBooks - request.qty, request.bookId)
                 val saleBookingResponse = SalesBooking(employee.get().email, book.get().title, costOfBook, request.qty)
-                return ResponseEntity(SalesBookingHttpResponse(2,null, saleBookingResponse, null), HttpStatus.CREATED)
+                return ResponseEntity(SalesBookingHttpResponse(0,null, saleBookingResponse, null), HttpStatus.CREATED)
             }
         }
     }
 
     override fun findAllSales():  List<Sales> {
-       val  responses: ArrayList<SalesResponse> = ArrayList() ;
-        return salesRepository.findAll();
+        return salesRepository.findAll()
     }
 
     override fun findSalesById(saleId: Long): Optional<Sales> {

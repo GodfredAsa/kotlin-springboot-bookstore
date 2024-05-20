@@ -9,16 +9,8 @@ import org.springframework.transaction.annotation.Transactional
 @Repository
 interface EmployeeRepository: JpaRepository<Employee, Long> {
 
-
     @Query("select (count(e) > 0) from Employee e where e.email = ?1")
     fun existsByEmail(email: String): Boolean
-
-
-//    @Transactional
-//    @Modifying
-//    @Query("update Employee e set e.wallet = ?1")
-//    fun updateWalletBy(wallet: Double): Int
-
 
     @Transactional
     @Modifying
