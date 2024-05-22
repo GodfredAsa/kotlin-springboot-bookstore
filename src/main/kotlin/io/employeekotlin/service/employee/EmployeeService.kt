@@ -16,7 +16,7 @@ class EmployeeService(private val employeeRepository: EmployeeRepository) {
                     CustomErrorMessage.NULL_ERROR), HttpStatus.NOT_FOUND)
         }
         return ResponseEntity(EmployeeResponse(
-                0, "", employeeRepository.getReferenceById(id), ""), HttpStatus.OK)
+                0, null, employeeRepository.getReferenceById(id), null), HttpStatus.OK)
     }
 
     fun addEmployee(employee: Employee): ResponseEntity<EmployeeResponse>{
@@ -28,8 +28,8 @@ class EmployeeService(private val employeeRepository: EmployeeRepository) {
                     HttpStatus.CONFLICT)
         }
         return ResponseEntity(EmployeeResponse(
-                0, "",
-                employeeRepository.save(employee), ""),
+                0, null,
+                employeeRepository.save(employee), null),
                 HttpStatus.CONFLICT)
     }
 
