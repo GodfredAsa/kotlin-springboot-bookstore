@@ -3,7 +3,9 @@ package io.employeekotlin.service.sales
 import io.employeekotlin.client.SalesBooking
 import io.employeekotlin.client.SalesBookingHttpResponse
 import io.employeekotlin.client.SalesRequest
-import io.employeekotlin.client.SalesResponse
+import io.employeekotlin.constants.BookingConstants
+import io.employeekotlin.constants.EmployeeConstants
+import io.employeekotlin.constants.SalesConstants
 import io.employeekotlin.service.book.BookRepository
 import io.employeekotlin.service.employee.EmployeeRepository
 import org.springframework.http.HttpStatus
@@ -20,9 +22,9 @@ class SalesServiceImp(
 
     override fun createSale(request: SalesRequest): ResponseEntity<SalesBookingHttpResponse> {
         if(!bookRepository.findExistingBookById(request.bookId)){
-            return ResponseEntity(SalesBookingHttpResponse(1,"Book Not Found", null, "Book does not exists"), HttpStatus.NOT_FOUND)
+            return ResponseEntity(SalesBookingHttpResponse(1, BookingConstants.BOOKING_NOT_FOUND, null, BookingConstants.BOOKING_NOT_EXISTS), HttpStatus.NOT_FOUND)
         }else if (!employeeRepository.existsById(request.employeeId)){
-            return ResponseEntity(SalesBookingHttpResponse(1,"User Not Found", null, "User does not exists"), HttpStatus.NOT_FOUND)
+            return ResponseEntity(SalesBookingHttpResponse(1,EmployeeConstants.NOT_FOUND, null, EmployeeConstants.NOT_FOUND), HttpStatus.NOT_FOUND)
         }else{
             val employee = employeeRepository.findById(request.employeeId)
             val book = bookRepository.findById(request.bookId);
@@ -30,22 +32,26 @@ class SalesServiceImp(
             val bookPrice = book.get().bookPrice
             val costOfBook = bookPrice * request.qty
             if(book.get().numberOfBooks < request.qty){
-                return ResponseEntity(SalesBookingHttpResponse(2,"Insufficient Number of Books", null, "Number of books available less than requested"), HttpStatus.BAD_REQUEST)
+                return ResponseEntity(SalesBookingHttpResponse(2,SalesConstants.INSUFFICIENT_BOOKS, null, SalesConstants.LESS_BOOKS), HttpStatus.BAD_REQUEST)
             }else if(employeeWallet < costOfBook){
-                return ResponseEntity(SalesBookingHttpResponse(2,"Insufficient Wallet funds", null, "User has inadequate funds"), HttpStatus.BAD_REQUEST)
+                return ResponseEntity(SalesBookingHttpResponse(2,EmployeeConstants.LESS_WALLET_FUNDS, null, EmployeeConstants.USER_HAS_LESS_FUNDS), HttpStatus.BAD_REQUEST)
             }else{
-                val buildSale = Sales.Builder()
-                        .amount(costOfBook)
-                        .employeeId(request.employeeId)
-                        .bookId(request.bookId)
-                        .build()
-                salesRepository.save(buildSale)
+                val sale = buildSale(costOfBook, request.employeeId, request.bookId)
+                salesRepository.save(sale)
                 employeeRepository.updateWalletById(employee.get().wallet - costOfBook, request.employeeId)
                 bookRepository.updateNumberOfBooksById(book.get().numberOfBooks - request.qty, request.bookId)
                 val saleBookingResponse = SalesBooking(employee.get().email, book.get().title, costOfBook, request.qty)
                 return ResponseEntity(SalesBookingHttpResponse(0,null, saleBookingResponse, null), HttpStatus.CREATED)
             }
         }
+    }
+
+    fun buildSale(costOfBook: Double, employeeId: Long, bookId: Long) : Sales {
+        return Sales.Builder()
+                .amount(costOfBook)
+                .employeeId(employeeId)
+                .bookId(bookId)
+                .build()
     }
 
     override fun findAllSales():  List<Sales> {
