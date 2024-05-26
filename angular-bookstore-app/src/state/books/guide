@@ -1,0 +1,6 @@
+Sequence of development
+1. action
+2. reducer
+3. effects
+4. selector
+5. book state module .

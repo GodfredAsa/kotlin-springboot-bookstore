@@ -1,0 +1,12 @@
+
+div{
+  width: 30%;
+  border-right: 6px solid orange;
+  /* border-left: 6px solid cornflowerblue; */
+  /* border-top: 6px solid green; */
+  border-bottom: 6px solid cornflowerblue;
+
+
+  padding-left: 10px;
+
+}
