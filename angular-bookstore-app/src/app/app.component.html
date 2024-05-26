@@ -1,0 +1,12 @@
+
+
+<h1>Angular NgRx </h1>
+
+<h1>Available Books </h1>
+<div *ngFor="let book of books">
+  <hr>
+  <h4>{{book.title}} </h4>
+  <p>GHS {{book.bookPrice}}, Qty: {{book.numberOfBooks}}</p>
+  <p>{{book.writtenDate}}</p>
+  <span>Written By <b>{{book.author}}</b></span>
+</div>

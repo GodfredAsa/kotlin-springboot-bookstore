@@ -8,6 +8,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/books")
+@CrossOrigin(origins = ["http://localhost:4200"])
 class BookController(private val bookService: BookService) {
 
     @PostMapping

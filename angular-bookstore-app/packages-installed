@@ -1,0 +1,2 @@
+npm install @ngrx/store --save --legacy-peer-deps
+npm install @ngrx/effects --save --legacy-peer-deps
