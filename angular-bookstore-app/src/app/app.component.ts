@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Book } from './model/books.model';
 import { Store } from '@ngrx/store';
 import { getBooksAction } from 'src/state/books/books.actions';
-import { getBooks } from 'src/state/books/books.selectors';
+import { getBooksSelector } from 'src/state/books/books.selectors';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ import { getBooks } from 'src/state/books/books.selectors';
 export class AppComponent implements OnInit{
   title = 'angular-bookstore-app';
 
-  books: Book[] = []
+  books: Observable<Book[]> | undefined
 
   name: string = "Hello World";
 
@@ -22,12 +23,7 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     this._store.dispatch(getBooksAction())
-    this._store.select(getBooks).subscribe((data) => {
-      this.books = data
-      console.log(this.books);
-
-    })
-
+    this.books = this._store.select(getBooksSelector)
   }
 
 }
