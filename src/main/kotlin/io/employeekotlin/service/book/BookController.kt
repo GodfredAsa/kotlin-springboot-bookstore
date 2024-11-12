@@ -13,8 +13,7 @@ class BookController(private val bookService: BookService) {
 
     @PostMapping
     fun createBook(@RequestBody book: Book): ResponseEntity<BookResponse>{
-        val createdBook = bookService.createBook(book)
-        return createdBook
+        return bookService.createBook(book)
     }
 
     @GetMapping("/{bookId}")

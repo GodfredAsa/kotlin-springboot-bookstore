@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { BookStateModule } from 'src/state/books/books-state.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { BookStateModule } from 'src/state/books/books-state.module';
     HttpClientModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot({}),
-    BookStateModule
+    BookStateModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

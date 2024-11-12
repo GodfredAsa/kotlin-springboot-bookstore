@@ -2,11 +2,38 @@
 
 <h1>Angular NgRx </h1>
 
+<button (click)="fetchData()">Reload</button>
+
 <h1>Available Books </h1>
-<div *ngFor="let book of books | async ">
-  <hr>
-  <h4>{{book.title}} </h4>
-  <p>GHS {{book.bookPrice}}, Qty: {{book.numberOfBooks}}</p>
-  <p>{{book.writtenDate}}</p>
-  <span>Written By <b>{{book.author}}</b></span>
-</div>
+<section>
+  <form (ngSubmit)="onAddBook()">
+    <input type="text" [(ngModel)]="title" name="name" placeholder="title">
+    <input type="author" [(ngModel)]="author" name="author" placeholder="Name of author ">
+    <input type="author" [(ngModel)]="bookPrice" name="bookPrice" placeholder="Name of author ">
+
+    <input type="number" [(ngModel)]="numberOfBooks" name="age" placeholder="Number of books available ">
+    <input type="date" [(ngModel)]="writtenDate" name="writtenDate">
+
+    <button type="submit">Create Book</button>
+  </form>
+
+  <table>
+    <tr>
+      <th>Author</th>
+      <th>title</th>
+      <th>qty</th>
+      <th>price</th>
+    </tr>
+    <tr *ngFor="let book of books | async ">
+      <td>{{book.author}}</td>
+      <td>{{book.title}}</td>
+      <td>{{book.numberOfBooks}}</td>
+      <td>{{book.bookPrice}}</td>
+    </tr>
+  </table>
+
+</section>
+
+
+<!-- booking appointment TRANSACTION ID -->
+<!-- SEVIS FEE when going for visa interview  -->

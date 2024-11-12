@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service
 class BookServiceImp(private val bookRepository: BookRepository) : BookService{
 
     override fun createBook(book: Book): ResponseEntity<BookResponse> {
+        println(book)
         return if (bookRepository.existsByTitle(book.title))
             ResponseEntity(BookResponse(1, BOOK_EXIST,null, BOOKING_CONFLICT), HttpStatus.CONFLICT)
         else ResponseEntity(BookResponse(0, NULL_MESSAGE, bookRepository.save(book), NULL_ERROR), HttpStatus.CREATED)

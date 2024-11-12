@@ -2,6 +2,7 @@ package io.employeekotlin.service.sales
 
 import io.employeekotlin.client.SalesBookingHttpResponse
 import io.employeekotlin.client.SalesRequest
+import jakarta.annotation.security.RolesAllowed
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
